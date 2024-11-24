@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LYDONIX - Authentication</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0f0f1a;
+            --secondary: #1a1a2e;
+            --accent: #7b2cbf;
+            --accent-light: #9d4edd;
+            --text: #e2e2e2;
+            --progress: #c77dff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--primary);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .auth-container {
+            max-width: 400px;
+            width: 100%;
+            margin: 2rem auto;
+            animation: fadeIn 1s ease-out 0.2s backwards;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            background: var(--secondary);
+            border-radius: 50px;
+            padding: 0.5rem;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 0.8rem;
+            text-align: center;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .auth-tab.active {
+            background: var(--accent);
+            color: var(--text);
+        }
+
+        .auth-form {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 1rem;
+        }
+
+        .error-message {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff4444;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--primary);
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .remember-me input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--accent);
+            color: var(--text);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-light);
+            transform: scale(1.02);
+        }
+
+        .auth-links {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .auth-links a {
+            color: var(--accent-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .auth-links a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .auth-container {
+                margin: 1rem auto;
+            }
+
+            .auth-form {
+                padding: 1.5rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="logo">LYDONIX</h1>
+    
+    <div class="auth-container">
+        <div class="auth-tabs">
+            <div class="auth-tab active">Please login to access the main page</div>
+        </div>
+
+        <form class="auth-form" id="login-form" onsubmit="return handleLogin(event)">
+            <div class="error-message" id="error-message">
+                Invalid username or password!
+            </div>
+            
+            <div class="form-group">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" required>
+            </div>
+            
+            <div class="remember-me">
+                <input type="checkbox" id="remember">
+                <label for="remember">Remember me</label>
+            </div>
+            
+            <button type="submit" class="submit-btn">Login</button>
+            
+            <div class="auth-links">
+                <a href="#" id="forgot-password">Forgot Password?</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Simplified predefined credentials array
+        const validCredentials = [
+            {
+                username: 'krishnan',
+                password: 'krishnan@123'
+            },
+            {
+                username: 'animan',
+                password: 'animan@123'
+            },
+            {
+                username: 'mochi',
+                password: 'mochi@123'
+            },
+            {
+                username: 'prachi',
+                password: 'prachi@123'
+            }
+        ];
+    
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            // Find matching credentials
+            const user = validCredentials.find(cred => 
+                cred.username === username && cred.password === password
+            );
+            
+            if (user) {
+                // Successful login
+                errorMessage.style.display = 'none';
+                // Simple redirect to index page
+                window.location.href = 'lydonix.html';
+            } else {
+                // Failed login
+                errorMessage.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
