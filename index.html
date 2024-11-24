@@ -226,7 +226,7 @@
     </div>
 
     <script>
-        // Simplified predefined credentials array
+        // predefined credentials array
         const validCredentials = [
             {
                 username: 'krishnan',
@@ -257,15 +257,15 @@
             const password = document.getElementById('login-password').value;
             const errorMessage = document.getElementById('error-message');
             
-            // Find matching credentials
+            // to match credentials
             const user = validCredentials.find(cred => 
                 cred.username === username && cred.password === password
             );
             
             if (user) {
-                // Successful login
+                
                 errorMessage.style.display = 'none';
-                // Simple redirect to index page
+                
                 window.location.href = 'lydonix.html';
             } else {
                 // Failed login
