@@ -1,4 +1,4 @@
-const API_KEY = 'AIzaSyC1kKnSE7pH01pf7aXxtCSKly-mYpc2sWY';
+const API_KEY = 'AIzaSyBmaR10WJWD_K4nsOU0CeafYWmj1pGM2ow';
 let player;
 let currentPlaylist = [];
 let currentIndex = -1;
