@@ -1,4 +1,3 @@
-// Replace with your YouTube API key
 const API_KEY = 'AIzaSyC1kKnSE7pH01pf7aXxtCSKly-mYpc2sWY';
 let player;
 let currentPlaylist = [];
@@ -21,7 +20,7 @@ const progress = document.querySelector('.progress');
 const currentTimeElement = document.querySelector('.current-time');
 const durationElement = document.querySelector('.duration');
 
-// Initialize YouTube Player
+// Initializing YouTube Player
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player-iframe', {
         height: '0',
@@ -49,7 +48,7 @@ function onPlayerStateChange(event) {
     }
 }
 
-// Search functionality
+// Search function
 searchBtn.addEventListener('click', performSearch);
 searchBar.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') performSearch();
@@ -91,7 +90,7 @@ prevBtn.addEventListener('click', playPrevious);
 nextBtn.addEventListener('click', playNext);
 volumeSlider.addEventListener('input', updateVolume);
 
-// Progress bar controls
+// Progress bar 
 progressBar.addEventListener('click', (e) => {
     const progressWidth = progressBar.clientWidth;
     const clickX = e.offsetX;
@@ -137,7 +136,7 @@ function updatePlayerInfo(song) {
     currentThumbnail.src = song.snippet.thumbnails.default.url;
 }
 
-// Progress bar updates
+// Progress updates
 function startProgressUpdate() {
     stopProgressUpdate();
     progressInterval = setInterval(updateProgress, 1000);
@@ -167,12 +166,12 @@ function formatTime(seconds) {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
-// Handle keyboard shortcuts
+// keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'INPUT') return; // Don't trigger if typing in search
+    if (e.target.tagName === 'INPUT') return; // no trigger if typing in search
 
     switch(e.key.toLowerCase()) {
-        case ' ':  // Spacebar
+        case ' ':  
             e.preventDefault();
             togglePlay();
             break;
@@ -194,7 +193,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Update volume icon based on level
+// volume icon based on level
 volumeSlider.addEventListener('input', updateVolumeIcon);
 
 function updateVolumeIcon() {
@@ -228,5 +227,5 @@ window.addEventListener('beforeunload', () => {
     }
 });
 
-// Initialize volume icon on load
+// volume icon on load
 updateVolumeIcon();
